@@ -1,7 +1,3 @@
-// Require Mongoose
-// Create Schema
-// Create Model
-// Export
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -25,6 +21,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["admin", "user"],
       default: "user",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true },

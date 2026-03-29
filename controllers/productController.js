@@ -5,8 +5,6 @@ const addProductSchema = require("./validation/productValidation");
 
 const addProductController = async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ msg: "Please Add Image" });
-
     const { error, value } = addProductSchema.validate(req.body, {
       abortEarly: false,
       stripUnknown: true,
@@ -17,23 +15,19 @@ const addProductController = async (req, res) => {
         msg: error.details.map((err) => err.message),
       });
     }
-    // Get Data From req.body
+
     const { name, price, stock } = value;
 
     const userId = req.user.id;
-    // Validation Data
-    // if (!name || !price || !stock)
-    //   return res.status(404).json({ msg: "Missing Data" });
-    // Check Admin Role
+
     const checkAdmin = await User.findById(userId);
 
     if (!checkAdmin) return res.status(404).json({ msg: "User Not Found" });
-    // Check Role
+
     if (checkAdmin.role !== "admin") return res.json({ msg: "Access Denied" });
-    // Create New Product
-    value.image = req.file.path;
+
+    if (req.file) value.image = req.file.path;
     const product = await Product.create(value);
-    // Response
 
     res.status(201).json({
       msg: "Done Create Product",
@@ -52,28 +46,31 @@ const getAllProductsController = async (req, res) => {
     res.status(500).json({ msg: "Server Error" });
   }
 };
-const searchProductController = async (req, res) => {
+
+const searchProductsController = async (req, res) => {
   try {
-    const { id } = req.query;
+    const  id  = req.params.id; 
 
-    if (!id) return res.status(400).json({ msg: "Missing ID" });
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ msg: "Invalid ID format" });
+    if (!id) {
+      return res.status(400).json({ msg: "Please provide product ID" });
     }
 
     const product = await Product.findById(id);
 
-    if (!product) return res.status(404).json({ msg: "Product not found" });
+    if (!product) {
+      return res.status(404).json({ msg: "Product not found" });
+    }
 
-    res.json(product);
+    res.json({
+      msg: `Product found`,
+      data: product,
+    });
   } catch (error) {
     res.status(500).json({ msg: "Server Error" });
   }
 };
-
 module.exports = {
+  searchProductsController,
   addProductController,
   getAllProductsController,
-  searchProductController,
 };

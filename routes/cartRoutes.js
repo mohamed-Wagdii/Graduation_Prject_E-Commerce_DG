@@ -10,3 +10,4 @@ router.post("/cart", authMiddleware, addCart);
 router.get("/cart", authMiddleware, getCart);
 
 module.exports = router;
+
