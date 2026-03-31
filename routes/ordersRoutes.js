@@ -4,15 +4,16 @@ const {
   placeOrder,
   getMyOrders,
   getOrderById,
+  cancelOrder,
   getAllOrders,
 } = require("../controllers/orderController");
 
 const authMiddleware = require("../Middleware/authMiddleware");
 
-router.post("/", authMiddleware, placeOrder);                        
-router.get("/my-orders", authMiddleware, getMyOrders);              
-router.get("/:id", authMiddleware, getOrderById);                    
-
-router.get("/", authMiddleware, getAllOrders);       
+router.post("/orders", authMiddleware, placeOrder);
+router.get("/orders", authMiddleware, getAllOrders);
+router.get("/orders/my-orders", authMiddleware, getMyOrders);
+router.get("/orders/:id", authMiddleware, getOrderById);
+router.put("/orders/:id/cancel", authMiddleware, cancelOrder);
 
 module.exports = router;

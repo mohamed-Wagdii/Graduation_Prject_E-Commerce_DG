@@ -18,10 +18,10 @@ const placeOrder = async (req, res) => {
       const product = await Product.findById(item.product._id);
 
       if (!product)
-        return res.status(404).json({ msg: `Product not found: ${item.product._id}` });
+        return res.status(404).json({ msg: `Product not found` });
 
       if (item.quantity > product.stock)
-        return res.status(400).json({ msg: `Insufficient stock for: ${product.name}` });
+        return res.status(400).json({ msg: `Insufficient stock ` });
 
       orderItems.push({
         product: product._id,
@@ -83,7 +83,7 @@ const getOrderById = async (req, res) => {
 
     if (!order) return res.status(404).json({ msg: "Order Not Found" });
 
-    if (order.user !== req.user.id && req.user.role !== "admin")
+    if (order.user.toString() !== req.user.id && req.user.role !== "admin")
       return res.status(403).json({ msg: "Not Authorized" });
 
     res.json({ data: order });
@@ -99,7 +99,7 @@ const cancelOrder = async (req, res) => {
 
     if (!order) return res.status(404).json({ msg: "Order Not Found" });
 
-    if (order.user !== req.user.id)
+    if (order.user.toString() !== req.user.id)
       return res.status(403).json({ msg: "Not Authorized" });
     
     if (order.status === "cancelled"){
@@ -116,7 +116,10 @@ const cancelOrder = async (req, res) => {
     order.status = "cancelled";
     await order.save();
 
-    res.json({ msg: "Order cancelled", data: order });
+    res.json({
+       msg: "Order cancelled",
+       data: order
+       });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Server Error" });
