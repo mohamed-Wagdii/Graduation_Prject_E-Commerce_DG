@@ -28,12 +28,7 @@ npm install
 ### Environment Variables
 Create a `.env` file in the root directory:
 
-```env
-PORT=3000
-JWT_SECRET_KEY=your_secret_key
-EMAIL=your_email@gmail.com
-EMAIL_PASSWORD=your_email_password
-```
+
 
 ### Run the Server
 
