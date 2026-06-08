@@ -1,11 +1,12 @@
 provider "aws" {
-  region = "us-west-1"
+  region = "eu-west-1"
 }
 
 terraform {
-    backend "s3" {
-        bucket = "digilians-tfstate"
-        key    = "terraform.tfstate"
-        region = "us-west-1"
-    }
+  backend "s3" {
+    bucket = "digilians-tfstate"
+    key    = "terraform.tfstate"
+    region = "eu-west-1"
+
+  }
 }
