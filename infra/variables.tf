@@ -1,7 +1,11 @@
 variable "vpc-name" {
-  type = string
+    type = string
 }
 
-variable "vpc-cidr" {
-  type = string
+variable "vpc-cidr"{
+    type = string
+}
+
+tags = {
+    Name = var.vpc_name
 }
